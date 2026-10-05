@@ -1,0 +1,30 @@
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# Databases (these hold real user accounts and password hashes)
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# One-off helper scripts (may contain emails or passwords)
+scripts/
+fix_admin_name.py
+fix_profiles.py
+
+# IDE settings
+.vscode/
+
+# OS files
+Thumbs.db
+.DS_Store
