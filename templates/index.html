@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>HRMS - Human Resource Management System</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+        
+    />
+</head>
+
+<body>
+
+<!-- =========================================================
+     AUTH SCREEN
+========================================================== -->
+
+<div id="auth-screen" class="auth-wrapper">
+
+    <div class="auth-hero">
+
+        <div class="brand-logo">
+
+            <div class="logo-icon">H</div>
+
+            <div>
+                <h2 style="color:#ffffff; -webkit-text-fill-color:#ffffff; background:none;">HRMS</h2>
+                <span style="color:#a5b4fc; -webkit-text-fill-color:#a5b4fc;">Human Resource Management</span>
+            </div>
+
+        </div>
+
+        <div class="hero-content">
+
+            <p class="tagline">WELCOME TO HRMS</p>
+
+            <h1 style="color:#ffffff; -webkit-text-fill-color:#ffffff; background:none;">
+                Manage Your Workforce Efficiently
+            </h1>
+
+            <p class="description">
+                A complete HR solution to manage employees, track attendance,
+                handle leave requests, and manage departments.
+            </p>
+
+            <ul class="feature-list">
+                <li><i class="fa-solid fa-circle-check"></i> Employee Management</li>
+                <li><i class="fa-solid fa-circle-check"></i> Attendance Tracking</li>
+                <li><i class="fa-solid fa-circle-check"></i> Leave Request Approvals</li>
+                <li><i class="fa-solid fa-circle-check"></i> Department Organization</li>
+                <li><i class="fa-solid fa-circle-check"></i> Payroll Management</li>
+                <li><i class="fa-solid fa-circle-check"></i> Chat Management</li>
+            </ul>
+
+        </div>
+
+        <p class="copyright">&copy; 2026 HRMS. All rights reserved.</p>
+
+    </div>
+
+
+    <!-- AUTH FORM -->
+
+    <div class="auth-form-container">
+
+        <div class="form-box">
+
+            <!-- LOGIN -->
+
+            <div id="login-container">
+
+                <p class="sub-heading">SIGN IN TO YOUR ACCOUNT</p>
+
+                <h2>Welcome Back</h2>
+
+                <p class="form-desc">
+                    Enter your email and password to access the system.
+                </p>
+
+                <form id="login-form">
+
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input
+                            type="email"
+                            id="login-email"
+                            placeholder="you@company.com"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input
+                            type="password"
+                            id="login-password"
+                            placeholder="••••••••"
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Sign In
+                    </button>
+
+                </form>
+
+                <p class="switch-auth">
+                    New here?
+                    <button
+                        type="button"
+                        onclick="toggleAuthMode('register')"
+                        class="btn-link"
+                    >
+                        Create an account
+                    </button>
+                </p>
+
+            </div>
+
+
+            <!-- REGISTER -->
+
+            <div id="register-container" class="hidden-view">
+
+                <p class="sub-heading">CREATE AN ACCOUNT</p>
+
+                <h2>Register Account</h2>
+
+                <p class="form-desc">
+                    Create your account to access your own dashboard.
+                </p>
+
+                <form id="register-form">
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+                            <label for="reg-fname">First Name</label>
+                            <input type="text" id="reg-fname" placeholder="John" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reg-lname">Last Name</label>
+                            <input type="text" id="reg-lname" placeholder="Doe" required />
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-email">Email Address</label>
+                        <input
+                            type="email"
+                            id="reg-email"
+                            placeholder="you@company.com"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input
+                            type="password"
+                            id="reg-password"
+                            placeholder="••••••••"
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Register &amp; Sign In
+                    </button>
+
+                    <small class="form-desc" style="display:block;margin-top:0.75rem;">
+                        Note: the administrator can see chat activity (who
+                        messaged whom).
+                    </small>
+
+                </form>
+
+                <p class="switch-auth">
+                    Already registered?
+                    <button
+                        type="button"
+                        onclick="toggleAuthMode('login')"
+                        class="btn-link"
+                    >
+                        Sign In
+                    </button>
+                </p>
+
+            </div>
+
+            <div id="auth-alert" class="alert hidden-view"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MAIN APPLICATION
+========================================================== -->
+
+<div id="app-screen" class="app-wrapper hidden-view">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="logo-icon">H</div>
+
+            <div>
+                <h3 style="color:#ffffff; -webkit-text-fill-color:#ffffff; background:none;">HRMS</h3>
+                <span style="color:#a5b4fc; -webkit-text-fill-color:#a5b4fc;">Workspace</span>
+            </div>
+
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-title">MAIN MENU</p>
+
+            <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-item active">
+                <i class="fa-solid fa-chart-pie"></i> Dashboard
+            </button>
+
+            <button onclick="switchView('employees')" id="nav-employees" class="nav-item">
+                <i class="fa-solid fa-users"></i> Employees
+            </button>
+
+            <button onclick="switchView('departments')" id="nav-departments" class="nav-item">
+                <i class="fa-solid fa-building"></i> Departments
+            </button>
+
+            <button onclick="switchView('attendance')" id="nav-attendance" class="nav-item">
+                <i class="fa-solid fa-clock"></i> Attendance
+            </button>
+
+            <button onclick="switchView('leave')" id="nav-leave" class="nav-item">
+                <i class="fa-solid fa-calendar-minus"></i> Leave Requests
+            </button>
+
+            <button onclick="switchView('payroll')" id="nav-payroll" class="nav-item">
+                <i class="fa-solid fa-money-bill-wave"></i> Payroll
+            </button>
+
+            <button onclick="switchView('chat')" id="nav-chat" class="nav-item">
+                <i class="fa-solid fa-comments"></i> Chat
+            </button>
+
+        </nav>
+
+        <!-- SIDEBAR FOOTER -->
+
+        <div class="sidebar-footer">
+
+            <div class="user-profile">
+
+                <div id="user-avatar" class="avatar">--</div>
+
+                <div class="user-details">
+                    <h4 id="user-name-display">Loading...</h4>
+                    <p id="user-role-display">&nbsp;</p>
+                </div>
+
+            </div>
+
+            <button onclick="logout()" class="btn-logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+                <h1 id="page-title">Dashboard</h1>
+                <p id="page-subtitle">Overview of system data and actions</p>
+            </div>
+
+            <!-- TOPBAR ACTIONS -->
+
+            <div class="topbar-actions">
+
+                <!-- NOTIFICATION BELL -->
+
+                <div id="notification-container" class="notification-container">
+
+                    <button
+                        id="notification-button"
+                        type="button"
+                        class="notification-button"
+                        onclick="toggleNotificationPanel()"
+                        aria-label="Notifications"
+                    >
+                        <i class="fa-solid fa-bell"></i>
+                        <span id="notification-badge" class="notification-badge hidden">0</span>
+                    </button>
+
+                    <!-- NOTIFICATION DROPDOWN -->
+
+                    <div id="notification-panel" class="notification-panel hidden-view">
+
+                        <div class="notification-panel-header">
+
+                            <div>
+                                <h3>Notifications</h3>
+                                <span id="notification-count-text">No new notifications</span>
+                            </div>
+
+                            <button
+                                id="mark-all-notifications-btn"
+                                type="button"
+                                class="btn-link"
+                                onclick="markAllNotificationsRead()"
+                            >
+                                Mark all as read
+                            </button>
+
+                        </div>
+
+                        <div id="notification-list" class="notification-list">
+                            <div class="notification-empty">
+                                <i class="fa-regular fa-bell-slash"></i>
+                                <p>No notifications yet.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="quick-actions">
+
+                    <button id="check-in-btn" onclick="triggerCheckIn()" class="btn btn-success">
+                        <i class="fa-solid fa-right-to-bracket"></i> Check In
+                    </button>
+
+                    <button id="check-out-btn" onclick="triggerCheckOut()" class="btn btn-dark">
+                        <i class="fa-solid fa-right-from-bracket"></i> Check Out
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT BODY -->
+
+        <div class="content-body">
+
+            <!-- =================================================
+                 CHAT
+            ================================================== -->
+
+            <div id="view-chat" class="view-panel hidden-view">
+
+                <div class="chat-layout">
+
+                    <!-- CONVERSATIONS -->
+
+                    <div class="chat-sidebar">
+
+                        <div class="chat-sidebar-header">
+                            <div>
+                                <h3>Messages</h3>
+                                <p class="form-desc">Chat with users in the system.</p>
+                            </div>
+                        </div>
+
+                        <div class="chat-search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="chat-user-search" placeholder="Search users..." />
+                        </div>
+
+                        <button
+                            type="button"
+                            id="new-chat-btn"
+                            class="btn btn-primary btn-block"
+                            onclick="openNewChat()"
+                        >
+                            <i class="fa-solid fa-plus"></i> New Chat
+                        </button>
+
+                        <div id="chat-conversations-list" class="chat-conversations-list">
+                            <div class="chat-empty">
+                                <i class="fa-regular fa-comments"></i>
+                                <p>No conversations yet.</p>
+                                <small>Start a new chat to begin messaging.</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- CHAT WINDOW -->
+
+                    <div class="chat-main">
+
+                        <!-- CHAT HEADER (user on the left, delete button on the right) -->
+
+                        <div
+                            id="chat-header"
+                            class="chat-header"
+                            style="display:flex; flex-direction:row; align-items:center; justify-content:space-between; gap:12px;"
+                        >
+
+                            <div class="chat-header-user" style="display:flex; align-items:center; gap:12px; min-width:0;">
+
+                                <div id="chat-header-avatar" class="avatar">?</div>
+
+                                <div>
+                                    <h3 id="chat-header-name">Select a conversation</h3>
+                                    <p id="chat-header-role">Choose a user to start chatting</p>
+                                    <p id="chat-header-typing" class="chat-header-typing hidden-view">typing...</p>
+                                </div>
+
+                            </div>
+
+                            <!-- Admin only: shown by chat.js when a chat is open -->
+                            <button
+                                type="button"
+                                id="delete-chat-btn"
+                                class="btn btn-danger hidden-view"
+                                style="margin-left:auto; flex-shrink:0; white-space:nowrap;"
+                                onclick="deleteCurrentChat()"
+                            >
+                                <i class="fa-solid fa-trash"></i> Delete Chat
+                            </button>
+
+                        </div>
+
+                        <!-- MESSAGES -->
+
+                        <div id="chat-messages" class="chat-messages">
+
+                            <div id="chat-welcome" class="chat-welcome">
+                                <div class="chat-welcome-icon">
+                                    <i class="fa-regular fa-comments"></i>
+                                </div>
+                                <h3>Your Messages</h3>
+                                <p>Select a conversation or start a new chat.</p>
+                            </div>
+
+                        </div>
+
+                        <!-- MESSAGE INPUT -->
+
+                        <div id="chat-input-container" class="chat-input-container">
+
+                            <textarea
+                                id="chat-message-input"
+                                placeholder="Type a message..."
+                                rows="1"
+                                disabled
+                            ></textarea>
+
+                            <button
+                                type="button"
+                                id="send-chat-message-btn"
+                                class="btn btn-primary"
+                                onclick="sendChatMessage()"
+                                disabled
+                            >
+                                <i class="fa-solid fa-paper-plane"></i> Send
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DASHBOARD
+            ================================================== -->
+
+            <div id="view-dashboard" class="view-panel">
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div>
+                            <p class="stat-label">Total Employees</p>
+                            <h3 id="stat-total-emp">0</h3>
+                        </div>
+                        <div class="stat-icon icon-blue"><i class="fa-solid fa-users"></i></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div>
+                            <p class="stat-label">Departments</p>
+                            <h3 id="stat-total-dept">0</h3>
+                        </div>
+                        <div class="stat-icon icon-purple"><i class="fa-solid fa-building"></i></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div>
+                            <p class="stat-label">Present Today</p>
+                            <h3 id="stat-present-today">0</h3>
+                        </div>
+                        <div class="stat-icon icon-green"><i class="fa-solid fa-user-check"></i></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div>
+                            <p class="stat-label">Pending Leaves</p>
+                            <h3 id="stat-pending-leaves">0</h3>
+                        </div>
+                        <div class="stat-icon icon-orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 EMPLOYEES
+            ================================================== -->
+
+            <div id="view-employees" class="view-panel hidden-view">
+
+                <div class="panel-header">
+
+                    <h3>Employee Directory</h3>
+
+                    <button
+                        id="add-employee-btn"
+                        onclick="toggleModal('modal-add-employee', true)"
+                        class="btn btn-primary"
+                    >
+                        <i class="fa-solid fa-plus"></i> Add Employee
+                    </button>
+
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Job Title</th>
+                                <th>Phone</th>
+                                <th>Department</th>
+                                <th>Basic Salary</th>
+                                <th>Account Number</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employee-table-body"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DEPARTMENTS
+            ================================================== -->
+
+            <div id="view-departments" class="view-panel hidden-view">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Departments</h3>
+                        <p class="form-desc">
+                            Manage departments, shift timing and view assigned employees.
+                        </p>
+                    </div>
+
+                    <button
+                        id="add-department-btn"
+                        onclick="toggleModal('modal-add-department', true)"
+                        class="btn btn-primary"
+                    >
+                        <i class="fa-solid fa-plus"></i> Add Department
+                    </button>
+
+                </div>
+
+                <div id="department-cards-container" class="cards-grid"></div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ATTENDANCE
+            ================================================== -->
+
+            <div id="view-attendance" class="view-panel hidden-view">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Attendance Logs</h3>
+                        <p class="form-desc">
+                            Lateness is calculated automatically from each
+                            employee's department shift timing. A late
+                            employee is always shown as Present, never Absent.
+                        </p>
+                    </div>
+
+                    <button
+                        id="add-attendance-btn"
+                        onclick="openAddAttendanceModal()"
+                        class="btn btn-primary"
+                    >
+                        <i class="fa-solid fa-plus"></i> Add Attendance
+                    </button>
+
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Date</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendance-table-body"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PAYROLL
+            ================================================== -->
+
+            <div id="view-payroll" class="view-panel hidden-view">
+
+                <div class="panel-header">
+
+                    <h3>Payroll Management</h3>
+
+                    <button
+                        id="add-payroll-btn"
+                        class="btn btn-primary"
+                        onclick="toggleModal('modal-add-payroll', true)"
+                    >
+                        <i class="fa-solid fa-plus"></i> Add Payroll
+                    </button>
+
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Pay Period</th>
+                                <th>Type</th>
+                                <th>Basic Salary</th>
+                                <th>Daily Salary</th>
+                                <th>Working Days</th>
+                                <th>Present</th>
+                                <th>Leave</th>
+                                <th>Absent</th>
+                                <th>Payable Days</th>
+                                <th>Attendance Deduction</th>
+                                <th>Allowances</th>
+                                <th>Deductions</th>
+                                <th>Net Salary</th>
+                                <th>Payment Method</th>
+                                <th>Payment Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payroll-table-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- LATE MARKINGS: Admin/HR only -->
+
+                <div id="late-markings-section" class="late-markings-section">
+
+                    <div class="panel-header">
+                        <div>
+                            <h3>Late Markings</h3>
+                            <p class="form-desc">
+                                Employees who checked in late are still
+                                counted as Present in payroll. This section
+                                summarizes late minutes and the related
+                                deduction, kept separate from the main table.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Pay Period</th>
+                                    <th>Late Count</th>
+                                    <th>Total Late Minutes</th>
+                                    <th>Late Deduction</th>
+                                </tr>
+                            </thead>
+                            <tbody id="late-markings-table-body"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LEAVE
+            ================================================== -->
+
+            <div id="view-leave" class="view-panel hidden-view">
+
+                <div class="panel-header">
+
+                    <h3>Leave Requests</h3>
+
+                    <button
+                        onclick="toggleModal('modal-add-leave', true)"
+                        class="btn btn-primary"
+                    >
+                        <i class="fa-solid fa-plus"></i> Request Leave
+                    </button>
+
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Emp ID</th>
+                                <th>Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Reason</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leave-table-body"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     ADD EMPLOYEE MODAL
+========================================================== -->
+
+<div id="modal-add-employee" class="modal-overlay hidden-view">
+
+    <div class="modal-card">
+
+        <h3>Add New Employee</h3>
+
+        <form id="form-add-employee">
+
+            <div class="form-row">
+                <input type="text" id="emp-fname" placeholder="First Name" required />
+                <input type="text" id="emp-lname" placeholder="Last Name" required />
+            </div>
+
+            <input type="email" id="emp-email" placeholder="Email Address" required />
+
+            <input type="text" id="emp-title" placeholder="Job Title" />
+
+            <input type="text" id="emp-phone" placeholder="Phone Number" />
+
+            <input
+                type="number"
+                id="emp-salary"
+                placeholder="Basic Salary"
+                min="0"
+                step="0.01"
+            />
+
+            <input type="text" id="emp-account" placeholder="Account Number" />
+
+            <select id="emp-dept-select" multiple>
+                <option value="">Select Department</option>
+            </select>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    onclick="toggleModal('modal-add-employee', false)"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Employee
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     EDIT EMPLOYEE MODAL
+========================================================== -->
+
+<div id="modal-edit-employee" class="modal-overlay hidden-view">
+
+    <div class="modal-card">
+
+        <h3>Edit Employee</h3>
+
+        <p class="form-desc">
+            Update employee details and department assignment.
+        </p>
+
+        <form id="form-edit-employee">
+
+            <input type="hidden" id="edit-emp-id" />
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="edit-emp-fname">First Name</label>
+                    <input type="text" id="edit-emp-fname" placeholder="First Name" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-emp-lname">Last Name</label>
+                    <input type="text" id="edit-emp-lname" placeholder="Last Name" required />
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="edit-emp-email">Email Address</label>
+                <input type="email" id="edit-emp-email" placeholder="Email Address" required />
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="edit-emp-title">Job Title</label>
+                    <input type="text" id="edit-emp-title" placeholder="Job Title" />
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-emp-phone">Phone Number</label>
+                    <input type="text" id="edit-emp-phone" placeholder="Phone Number" />
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="edit-emp-hire-date">Hire Date</label>
+                    <input type="date" id="edit-emp-hire-date" />
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-emp-status">Status</label>
+                    <select id="edit-emp-status">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="edit-emp-salary">Basic Salary</label>
+                    <input
+                        type="number"
+                        id="edit-emp-salary"
+                        min="0"
+                        step="0.01"
+                        placeholder="Basic Salary"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-emp-account">Account Number</label>
+                    <input type="text" id="edit-emp-account" placeholder="Account Number" />
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="edit-emp-dept-select">Departments</label>
+                <select id="edit-emp-dept-select" multiple>
+                    <option value="">Select Department</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    onclick="toggleModal('modal-edit-employee', false)"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ADD DEPARTMENT MODAL
+========================================================== -->
+
+<div id="modal-add-department" class="modal-overlay hidden-view">
+
+    <div class="modal-card">
+
+        <h3>Create Department</h3>
+
+        <form id="form-add-department">
+
+            <div class="form-group">
+                <label for="dept-name">Department Name</label>
+                <input type="text" id="dept-name" placeholder="e.g. Development" required />
+            </div>
+
+            <div class="form-group">
+                <label for="dept-desc">Description</label>
+                <textarea id="dept-desc" placeholder="Department description"></textarea>
+            </div>
+
+            <div class="form-group">
+
+                <label>Working Days</label>
+
+                <div class="working-days-selection">
+
+                    <label>
+                        <input type="checkbox" id="dept-day-monday" name="working-days" value="Monday" checked />
+                        Monday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="dept-day-tuesday" name="working-days" value="Tuesday" checked />
+                        Tuesday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="dept-day-wednesday" name="working-days" value="Wednesday" checked />
+                        Wednesday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="dept-day-thursday" name="working-days" value="Thursday" checked />
+                        Thursday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="dept-day-friday" name="working-days" value="Friday" checked />
+                        Friday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="dept-day-saturday" name="working-days" value="Saturday" />
+                        Saturday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="dept-day-sunday" name="working-days" value="Sunday" />
+                        Sunday
+                    </label>
+
+                </div>
+
+                <small>
+                    Select the days employees in this department normally work.
+                </small>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Shift Timing &amp; Late Threshold</label>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="dept-start-time">Shift Start</label>
+                        <input type="time" id="dept-start-time" value="09:00" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dept-end-time">Shift End</label>
+                        <input type="time" id="dept-end-time" value="17:00" />
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="dept-late-after">Late After</label>
+                    <input type="time" id="dept-late-after" value="09:15" />
+                </div>
+
+                <small>
+                    Any check-in after this time is automatically marked
+                    late (the employee still counts as Present).
+                </small>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    onclick="toggleModal('modal-add-department', false)"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Create
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     EDIT DEPARTMENT MODAL
+========================================================== -->
+
+<div id="modal-edit-department" class="modal-overlay hidden-view">
+
+    <div class="modal-card">
+
+        <h3>Edit Department</h3>
+
+        <form id="form-edit-department">
+
+            <input type="hidden" id="edit-dept-id" />
+
+            <div class="form-group">
+                <label for="edit-dept-name">Department Name</label>
+                <input type="text" id="edit-dept-name" placeholder="e.g. Development" required />
+            </div>
+
+            <div class="form-group">
+                <label for="edit-dept-desc">Description</label>
+                <textarea id="edit-dept-desc" placeholder="Department description"></textarea>
+            </div>
+
+            <div class="form-group">
+
+                <label>Working Days</label>
+
+                <div class="working-days-selection">
+
+                    <label>
+                        <input type="checkbox" id="edit-dept-day-monday" value="Monday" />
+                        Monday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="edit-dept-day-tuesday" value="Tuesday" />
+                        Tuesday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="edit-dept-day-wednesday" value="Wednesday" />
+                        Wednesday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="edit-dept-day-thursday" value="Thursday" />
+                        Thursday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="edit-dept-day-friday" value="Friday" />
+                        Friday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="edit-dept-day-saturday" value="Saturday" />
+                        Saturday
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="edit-dept-day-sunday" value="Sunday" />
+                        Sunday
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Shift Timing &amp; Late Threshold</label>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="edit-dept-start-time">Shift Start</label>
+                        <input type="time" id="edit-dept-start-time" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-dept-end-time">Shift End</label>
+                        <input type="time" id="edit-dept-end-time" />
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-dept-late-after">Late After</label>
+                    <input type="time" id="edit-dept-late-after" />
+                </div>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    onclick="toggleModal('modal-edit-department', false)"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ADD ATTENDANCE MODAL
+========================================================== -->
+
+<div id="modal-add-attendance" class="modal-overlay hidden-view">
+
+    <div class="modal-card">
+
+        <h3>Add Attendance</h3>
+
+        <p class="form-desc">
+            Admin or HR can manually mark attendance for an employee.
+            Lateness is calculated automatically from the employee's
+            department shift.
+        </p>
+
+        <form id="form-add-attendance">
+
+            <div class="form-group">
+                <label for="attendance-employee">Employee</label>
+                <select id="attendance-employee" required>
+                    <option value="">Select Employee</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="attendance-date">Date</label>
+                <input type="date" id="attendance-date" required />
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="attendance-check-in">Check In</label>
+                    <input type="time" id="attendance-check-in" />
+                </div>
+
+                <div class="form-group">
+                    <label for="attendance-check-out">Check Out</label>
+                    <input type="time" id="attendance-check-out" />
+                </div>
+
+            </div>
+
+            <!-- Live department shift + late preview -->
+            <div id="attendance-late-info" class="attendance-late-info"></div>
+
+            <div class="form-group">
+                <label for="attendance-status">Status</label>
+                <select id="attendance-status" required>
+                    <option value="present">Present</option>
+                    <option value="absent">Absent</option>
+                    <option value="leave">Leave</option>
+                    <option value="half_day">Half Day</option>
+                </select>
+            </div>
+
+            <small>
+                A check-in after the department's "Late After" time is
+                automatically marked Present + Late — it is never turned
+                into Absent.
+            </small>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    onclick="toggleModal('modal-add-attendance', false)"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Attendance
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ADD LEAVE MODAL
+========================================================== -->
+
+<div id="modal-add-leave" class="modal-overlay hidden-view">
+
+    <div class="modal-card">
+
+        <h3>Submit Leave Request</h3>
+
+        <form id="form-add-leave">
+
+            <div id="leave-employee-group" class="form-group hidden-view">
+                <label for="leave-employee">Employee</label>
+                <select id="leave-employee">
+                    <option value="">Select Employee</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="leave-type">Leave Type</label>
+                <select id="leave-type" required>
+                    <option value="">Select Leave Type</option>
+                    <option value="annual">Annual Leave</option>
+                    <option value="sick">Sick Leave</option>
+                    <option value="casual">Casual Leave</option>
+                    <option value="unpaid">Unpaid Leave</option>
+                    <option value="maternity">Maternity Leave</option>
+                    <option value="paternity">Paternity Leave</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="leave-start">Start Date</label>
+                <input type="date" id="leave-start" required />
+            </div>
+
+            <div class="form-group">
+                <label for="leave-end">End Date</label>
+                <input type="date" id="leave-end" required />
+            </div>
+
+            <div class="form-group">
+                <label for="leave-reason">Reason</label>
+                <textarea id="leave-reason" placeholder="Reason for leave"></textarea>
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    onclick="toggleModal('modal-add-leave', false)"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Submit
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ADD PAYROLL MODAL
+========================================================== -->
+
+<div id="modal-add-payroll" class="modal-overlay hidden-view">
+
+    <div class="modal-card">
+
+        <h3>Add Payroll Record</h3>
+
+        <form id="form-add-payroll">
+
+            <!-- Employee -->
+            <div class="form-group">
+                <label for="payroll-employee">Employee</label>
+                <select id="payroll-employee" required>
+                    <option value="">Select Employee</option>
+                </select>
+            </div>
+
+            <!-- Pay Type -->
+            <div class="form-group">
+                <label for="payroll-type">Pay Type</label>
+                <select id="payroll-type" onchange="updateSalaryFields()" required>
+                    <option value="monthly">Monthly</option>
+                    <option value="daily">Daily</option>
+                </select>
+            </div>
+
+            <!-- Basic Salary -->
+            <div class="form-group">
+                <label id="payroll-salary-label" for="payroll-basic">Monthly Salary</label>
+                <input
+                    type="number"
+                    id="payroll-basic"
+                    min="0"
+                    step="0.01"
+                    placeholder="Enter monthly salary"
+                    required
+                />
+            </div>
+
+            <!-- Working Days -->
+            <div class="form-group">
+
+                <label for="payroll-working-days">Working Days</label>
+
+                <input
+                    type="number"
+                    id="payroll-working-days"
+                    min="0"
+                    max="31"
+                    placeholder="Select employee and month"
+                    step="1"
+                    readonly
+                />
+
+                <small class="text-muted">
+                    Working days are calculated automatically
+                    according to the employee's department schedule
+                    and selected payroll month.
+                </small>
+
+            </div>
+
+            <!-- Daily Salary Preview -->
+            <div class="form-group">
+                <label for="payroll-daily-preview">Calculated Daily Salary</label>
+                <input type="text" id="payroll-daily-preview" readonly value="0.00" />
+            </div>
+
+            <!-- Monthly Salary Preview -->
+            <div class="form-group">
+                <label for="payroll-monthly-preview">Monthly Salary Equivalent</label>
+                <input type="text" id="payroll-monthly-preview" readonly value="0.00" />
+            </div>
+
+            <!-- Allowances -->
+            <div class="form-group">
+                <label for="payroll-allowances">Allowances</label>
+                <input type="number" id="payroll-allowances" min="0" step="0.01" value="0" />
+            </div>
+
+            <!-- Deductions -->
+            <div class="form-group">
+                <label for="payroll-deductions">Deductions</label>
+                <input type="number" id="payroll-deductions" min="0" step="0.01" value="0" />
+            </div>
+
+            <!-- Net Salary Preview -->
+            <div class="form-group">
+                <label for="payroll-net-preview">Estimated Net Salary</label>
+                <input type="text" id="payroll-net-preview" readonly value="0.00" />
+            </div>
+
+            <!-- Payment Method -->
+            <div class="form-group">
+                <label for="payroll-payment-method">Payment Method</label>
+                <select id="payroll-payment-method" required>
+                    <option value="bank">Bank</option>
+                    <option value="cash">Cash</option>
+                </select>
+            </div>
+
+            <!-- Payment Status -->
+            <div class="form-group">
+                <label for="payroll-payment-status">Payment Status</label>
+                <select id="payroll-payment-status" required>
+                    <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
+                </select>
+            </div>
+
+            <!-- Month + Year -->
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="payroll-month">Month</label>
+
+                    <select id="payroll-month" required>
+                        <option value="">Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="payroll-year">Year</label>
+                    <input type="number" id="payroll-year" min="2000" required />
+                </div>
+
+            </div>
+
+            <!-- Modal Actions -->
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    onclick="toggleModal('modal-add-payroll', false)"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Payroll
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     EDIT PAYROLL PAYMENT MODAL (status + method together)
+========================================================== -->
+
+<div id="modal-edit-payroll-payment" class="modal-overlay hidden-view">
+
+    <div class="modal-card">
+
+        <h3>Update Payment Details</h3>
+
+        <p class="form-desc">
+            Change the payment status and payment method for this payroll
+            record together.
+        </p>
+
+        <form id="form-edit-payroll-payment">
+
+            <input type="hidden" id="edit-payroll-id" />
+
+            <div class="form-group">
+                <label for="edit-payroll-status">Payment Status</label>
+                <select id="edit-payroll-status">
+                    <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-payroll-method">Payment Method</label>
+                <select id="edit-payroll-method">
+                    <option value="bank">Bank</option>
+                    <option value="cash">Cash</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    onclick="toggleModal('modal-edit-payroll-payment', false)"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Payment Details
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     NEW CHAT MODAL
+========================================================== -->
+
+<div id="modal-new-chat" class="modal-overlay hidden-view">
+
+    <div class="modal-card">
+
+        <h3>Start New Chat</h3>
+
+        <p class="form-desc">Select a user to start a conversation.</p>
+
+        <div class="form-group">
+            <label for="new-chat-user">User</label>
+            <select id="new-chat-user">
+                <option value="">Select User</option>
+            </select>
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                type="button"
+                onclick="toggleModal('modal-new-chat', false)"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                onclick="startNewChat()"
+                class="btn btn-primary"
+            >
+                <i class="fa-solid fa-comments"></i> Start Chat
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script src="{{ url_for('static', filename='chat.js') }}"></script>
+
+</body>
+</html>
